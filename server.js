@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 // Handling Uncaught Exceptions-------------------------
 process.on('uncaughtException', (err) => {
   console.log('UNCAUGHT EXCEPTION 💥 Shutting down..........');
-  console.log(err.name, err.message);
+  // console.log(err.name, err.message);
   process.exit(1);
 });
 
@@ -42,7 +42,7 @@ const server = app.listen(port, () => {
 //HANDLING UNHANDLED PROMISE REJECTIONS-------------------"SAFETY NET"
 process.on('unhandledRejection', (err) => {
   console.log('UNHANDLED REJECTION 💥 Shutting down..........');
-  console.log(err);
+  // console.log(err);
   server.close(() => {
     process.exit(1);
   });
