@@ -16,7 +16,7 @@ const signToken = (id) =>
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
 
-const createSendToken = (user, statusCode, res) => {
+const createSendToken = (user, statusCode, req, res) => {
   const token = signToken(user._id);
 
   const cookieOptions = {
@@ -24,11 +24,11 @@ const createSendToken = (user, statusCode, res) => {
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
     ),
     httpOnly: true,
+    secure:
+      req.secure === 'true' || req.headers['x-forwarded-proto'] === 'https',
   };
 
   res.cookie('jwt', token, cookieOptions);
-
-  if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
 
   // Remove password from output
   user.password = undefined;
@@ -66,7 +66,7 @@ exports.signup = catchAsync(async (req, res, next) => {
   // console.log(url);
 
   //GENERATE TOKEN FOR NEW USER
-  createSendToken(newUser, 201, res);
+  createSendToken(newUser, 201, req, res);
   // const token = signToken(newUser._id);
 
   // res.status(201).json({
@@ -96,7 +96,7 @@ exports.login = catchAsync(async (req, res, next) => {
 
   // console.log(user);
   // If everything is ok, send token to client
-  createSendToken(user, 200, res);
+  createSendToken(user, 200, req, res);
   // const token = signToken(user._id);
 
   // //Response
@@ -290,7 +290,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   // 3) Update chagedPasswordAt property for the user
 
   // 4) Log the user in, send JWT
-  createSendToken(user, 200, res);
+  createSendToken(user, 200, req, res);
   // const token = signToken(user._id);
 
   // //Response
@@ -316,7 +316,7 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   // user.findByIdAndUpdate will not work as intended!
 
   // 4) Log user in, send JWT
-  createSendToken(user, 200, res);
+  createSendToken(user, 200, req, res);
   // const token = signToken(user._id);
 
   // //Response

@@ -18,6 +18,9 @@ const viewRouter = require('./routes/viewRoutes');
 
 const app = express();
 
+// Trust Proxy
+app.enable('trust proxy');
+
 // SETTING UP PUG
 app.set('view engine', 'pug');
 // SETTING UP THE VIEWS FOLDER FOR MVC
