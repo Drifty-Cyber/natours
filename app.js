@@ -5,6 +5,7 @@ const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
+const cors = require('cors');
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
 const compression = require('compression');
@@ -27,6 +28,13 @@ app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
 //GLOBAL MIDDLEWARES
+
+// IMPLEMENT CORS - SET "Access Control Allow Origin Header"
+app.use(cors());
+
+// Handle Non-simple requests(Options Requests)
+app.options('*', cors());
+// app.options('/api/v1/tours/:id', cors());
 
 //SERVING STATIC FILES
 // app.use(express.static(`${__dirname}/public`));
