@@ -14,7 +14,9 @@ exports.getCheckoutSession = catchAsync(async (req, res, next) => {
   const product = await stripe.products.create({
     name: `${tour.name}`,
     description: `${tour.description}`,
-    images: [`${req.protocol}://${req.get('host')}/img/tours/tour-3-cover.jpg`],
+    images: [
+      `${req.protocol}://${req.get('host')}/img/tours/${tour.imageCover}`,
+    ],
   });
 
   // Define a price object
