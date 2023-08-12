@@ -8,6 +8,10 @@ const router = express.Router();
 // This places this middleware before all routes
 // router.use(authController.isLoggedIn);
 
+// ALERTS MIDDLEWARE
+// Get query on all requests
+router.use(viewController.alerts);
+
 router.get(
   '/',
   // bookingController.createBookingCheckout,
